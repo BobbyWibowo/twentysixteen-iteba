@@ -321,6 +321,16 @@ function twentysixteen_get_color_schemes() {
 					'#686868',
 				),
 			),
+			'iteba' => array(
+				'label'  => __( 'Translateindo', 'twentysixteen' ),
+				'colors' => array(
+					'#1a1a1a',
+					'#ffffff',
+					'#620089',
+					'#1a1a1a',
+					'#686868',
+				),
+			),
 			'dark'    => array(
 				'label'  => __( 'Dark', 'twentysixteen' ),
 				'colors' => array(
