@@ -4029,43 +4029,201 @@ p > video {
  * BEGIN: Bobby's customization.
  */
 
-/** Prettier Nested Comments - Bobby **/
-
-.comment-list .comment.depth-1:not(:last-child) {
-	margin-bottom: 1em;
+.is-hidden {
+	display: none !important;
 }
 
-.comment {
+.no-comments {
+	border-top: 4px solid #1a1a1a !important;
+	font-size: 1.25rem;
+	padding-top: 1.217391304em;
+	margin-bottom: 1.217391304em;
+}
+
+.comment-respond {
+	margin-bottom: 1.217391304em;
+}
+
+/** Reddit-inspired nested comments **/
+
+/* Comment form */
+
+.form-submit {
+	text-align: right;
+}
+
+/* Comments list (TISE-only) */
+
+.comment-list.tise {
+	/* padding-top: 1.75em;
+	margin-left: -8px; */
+}
+
+.comment-list.tise .children > li {
+	padding-left: 0 !important;
+}
+
+.comment-list.tise .comment {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.comment-list.tise .comment:not(:first-child) {
+	margin-top: 1.5em;
+}
+
+.comment-list.tise .expand-button {
+	cursor: pointer;
+	font-size: .8em;
+	line-height: 1.3em;
+	text-align: center;
+}
+
+.comment-list.tise .threadline-column {
+	flex: 1.25em 0 0;
+	display: flex;
+	flex-direction: column;
+	align-self: stretch;
+	justify-content: center;
+}
+
+.comment-list.tise .threadline-column > .comment-author {
+	margin: .25em 0;
+}
+
+.comment-list.tise .threadline-column .avatar {
+	display: block;
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	top: 0;
+	margin-right: 0;
+	float: unset;
+}
+
+.comment-list.tise .threadline-div {
+	flex: 1 1 0;
+	display: flex;
+	cursor: pointer;
+	align-content: center;
+	justify-content: center;
+}
+
+.comment-list.tise .threadline-div .threadline {
+    box-sizing: border-box;
 	border-left: 2px solid #EDEFF1;
-	padding-left: 1em !important;
+	align-self: stretch;
 }
 
-/*
-.comment:hover {
+.comment-list.tise .threadline-div:hover .threadline {
 	border-left-color: black;
 }
-*/
 
-.comment .comment-body {
+.comment-list.tise .comment-column {
+	flex: 1 1 0;
+	padding: 0;
+}
+
+.comment-list.tise .comment-body {
+	padding: 0 0 .5em .5em;
 	border-top: 0;
-	padding: .75em 0 .75em .75em;
 }
 
-.comment:not(.depth-1) {
-	margin-top: 1em;
-}
-
-.comment-metadata {
+.comment-list.tise .reply {
 	margin-bottom: 1em;
 }
 
-.comment-content p:last-of-type {
-	margin-bottom: .75em;
+.comment-list.tise .comment-column .comment-respond {
+	padding-left: .5em;
+	margin-bottom: 0;
 }
 
-.comment-reply-link {
+.comment-list.tise .comment-column .comment-reply-title {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.comment-list.tise .comment-meta > .comment-author .avatar {
+	display: none;
+}
+
+.comment-list.tise .collapse-message {
+	padding-left: .5em;
+	opacity: .6;
+	transition: .25s opacity;
+}
+
+.comment-list.tise .collapse-message a {
+	padding-right: .5em;
+}
+
+.comment-list.tise .comment.is-collapsed:hover .collapse-message {
+	opacity: 1;
+}
+
+.comment-list.tise .comment-body .comment-metadata {
+	margin-bottom: 1em;
+}
+
+.comment-list.tise .comment-body .comment-content p:last-of-type {
+	margin-bottom: .5em;
+}
+
+.comment-list.tise .comment-body .comment-reply-link {
 	margin-top: .5em;
 }
+
+/* Comment Popularity plugin (TISE-only) */
+
+.comment-list.tise .comment-weight-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: .8em;
+	line-height: 1.5em;
+	padding-top: .6em;
+}
+
+.comment-list.tise .comment-weight-container span {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+.comment-list.tise .comment-weight-container a {
+	box-shadow: none;
+	cursor: pointer;
+}
+
+.comment-list.tise .comment-weight-container .upvote,
+.comment-list.tise .comment-weight-container .upvote a {
+	color: green;
+}
+
+.comment-list.tise .comment-weight-container .downvote,
+.comment-list.tise .comment-weight-container .downvote a {
+	color: red;
+}
+
+@media screen and (min-width: 44.375em) {
+	.comment-list.tise .threadline-column > .comment-author {
+		display: none;
+	}
+
+	.comment-list.tise .comment-meta > .comment-author .avatar {
+		display: block;
+	}
+
+	.comment-list.tise .comment-weight-container {
+		line-height: 1.3em;
+		padding-top: 0;
+	}
+}
+
+/* Fontello: Opt to set icons from here to avoid editing fontello.css */
+.icon-vote-up:before { content: '\e801'; }
+.icon-vote-down:before { content: '\e802'; }
+.icon-expand-button:before { content: '\e800'; }
 
 /**
  * END: Bobby's customization.

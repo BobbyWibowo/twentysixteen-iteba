@@ -32,6 +32,18 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 	require get_template_directory() . '/inc/back-compat.php';
 }
 
+// TODO: Don't forget to remove this.
+function _debug( $anything ){
+	add_action(
+		'shutdown',
+		function () use ( $anything ) {
+			echo '<pre style="background-color: white;">';
+			var_dump( $anything );
+			echo '</pre>';
+		}
+	);
+}
+
 if ( ! function_exists( 'twentysixteen_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
@@ -97,7 +109,7 @@ if ( ! function_exists( 'twentysixteen_setup' ) ) :
 		/**
 		 * Custom comment walker.
 		 */
-		// require get_template_directory() . '/inc/walker-comment.php';
+		require get_template_directory() . '/inc/walker-comment.php';
 
 		/*
 		 * Switch default core markup for search form, comment form, and comments
@@ -383,6 +395,9 @@ function twentysixteen_scripts() {
 	// Add Genericons, used in the main stylesheet.
 	wp_enqueue_style( 'genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1' );
 
+	// Add Fontello.
+	wp_enqueue_style( 'fontello', get_template_directory_uri() . '/fontello/css/fontello.css', array(), 'b35d4720' );
+
 	// Theme stylesheet.
 	wp_enqueue_style( 'twentysixteen-style', get_stylesheet_uri(), array(), '20190507' );
 
@@ -416,6 +431,10 @@ function twentysixteen_scripts() {
 	}
 
 	wp_enqueue_script( 'twentysixteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20181217', true );
+
+	wp_enqueue_script( 'twentysixteen-scope-polyfill', get_template_directory_uri() . '/js/scope-polyfill.js', array(), '20200427', true );
+
+	wp_enqueue_script( 'twentysixteen-nested-comments', get_template_directory_uri() . '/js/nested-comments.js', array(), '20200426', true );
 
 	wp_localize_script(
 		'twentysixteen-script',

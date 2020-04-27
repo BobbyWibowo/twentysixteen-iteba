@@ -18,9 +18,25 @@
 if ( post_password_required() ) {
 	return;
 }
+
+$commentFormArray = array(
+	'comment_field' => sprintf(
+		'<p class="comment-form-comment">%s %s</p>',
+		sprintf(
+			'<label for="comment">%s</label>',
+			_x( 'Comment', 'noun' )
+		),
+		'<textarea id="comment" name="comment" cols="45" rows="4" maxlength="65525" required="required"></textarea>'
+	),
+	'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
+	'title_reply_after' => '</h2>',
+	'label_submit' => __( 'Comment', 'twentysixteen-iteba' )
+);
+
+$useCustomWalker = true;
 ?>
 
-<div id="comments" class="comments-area">
+<div id="comments" class="comments-area comments-main">
 
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title">
@@ -46,45 +62,53 @@ if ( post_password_required() ) {
 			?>
 		</h2>
 
+		<?php
+		// If comments are closed and there are comments, let's leave a little note, shall we?
+		// if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
+		if ( ! comments_open() ) : ?>
+		<p class="no-comments"><?php _e( 'Comments are closed.', 'twentysixteen' ); ?></?>
+		<?php endif; ?>
+
 		<?php the_comments_navigation(); ?>
 
-		<ol class="comment-list">
+		<?php comment_form( $commentFormArray ); ?>
+
+		<div class="comment-list<?php echo $useCustomWalker ? ' tise' : '' ?>">
 			<?php
-				$args = array(
-					'style'       => 'ol',
-					'short_ping'  => true,
-					'avatar_size' => 42,
-				);
+				if ( $useCustomWalker ) {
+					$args = array(
+						'style'       => 'ul',
+						'short_ping'  => true,
+						'avatar_size' => 42,
+					);
 
-				// Use our custom walker if it's available
-				if( class_exists( 'TISE_Walker_Comment' ) )
-				{
-					$args['format'] = 'tise';
-					$args['walker'] = new TISE_Walker_Comment;
+					// Use our custom walker if it's available.
+					if( class_exists( 'TISE_Walker_Comment' ) )
+					{
+						$args['format'] = 'tise';
+						$args['walker'] = new TISE_Walker_Comment;
+					}
+
+					// Hook onto Comments Popularity plugin if exist.
+					if ( function_exists( 'hmn_cp_the_sorted_comments' ) ) {
+						hmn_cp_the_sorted_comments( $args );
+					}
+					else
+					{
+						wp_list_comments( $args );
+					}
+				} else {
+					wp_list_comments();
 				}
-
-				wp_list_comments($args);
 			?>
-		</ol><!-- .comment-list -->
+		</div><!-- .comment-list -->
 
 		<?php the_comments_navigation(); ?>
+
+	<?php else: ?>
+
+		<?php comment_form( $commentFormArray ); ?>
 
 	<?php endif; // Check for have_comments(). ?>
-
-	<?php
-		// If comments are closed and there are comments, let's leave a little note, shall we?
-	if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
-		?>
-	<p class="no-comments"><?php _e( 'Comments are closed.', 'twentysixteen' ); ?></p>
-	<?php endif; ?>
-
-	<?php
-		comment_form(
-			array(
-				'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
-				'title_reply_after'  => '</h2>',
-			)
-		);
-		?>
 
 </div><!-- .comments-area -->
