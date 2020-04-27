@@ -434,7 +434,7 @@ function twentysixteen_scripts() {
 
 	wp_enqueue_script( 'twentysixteen-scope-polyfill', get_template_directory_uri() . '/js/scope-polyfill.js', array(), '20200427', true );
 
-	wp_enqueue_script( 'twentysixteen-nested-comments', get_template_directory_uri() . '/js/nested-comments.js', array(), '20200426', true );
+	wp_enqueue_script( 'twentysixteen-nested-comments', get_template_directory_uri() . '/js/nested-comments.js', array(), '20200427', true );
 
 	wp_localize_script(
 		'twentysixteen-script',
