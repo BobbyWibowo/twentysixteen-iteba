@@ -129,7 +129,7 @@
 	}, true )
 
 	// On first page load, collapse all level 4 comments.
-	const targetLevel = 4
+	const targetLevel = 6
 	const targets = commentList.querySelectorAll( '.comment.depth-' + targetLevel )
 	if ( targets.length ) {
 		for ( let i = 0; i < targets.length; i++ )
