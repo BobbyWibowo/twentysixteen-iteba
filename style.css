@@ -4381,6 +4381,15 @@ p > video {
 }
 
 @media screen and (min-width: 44.375em) {
+	body:not(.custom-background-image)::before,
+	body:not(.custom-background-image)::after {
+		display: none;
+	}
+
+	.site {
+		margin: 0;
+	}
+
 	.comment-list.tise .threadline-column > .comment-author {
 		display: none;
 	}
