@@ -28,14 +28,38 @@ class Chapter_Navigation
 		)
 	);
 
-	function load_settings( $post )
+	private function get_table_of_contents ( $categories )
+	{
+		$table_of_contents = array();
+
+		for ( $i = 0, $size = count( $categories ); $i < $size; ++$i )
+		{
+			if ( property_exists( $categories[$i], 'cat_ID' ) )
+			{
+				$cat_ID = $categories[$i]->cat_ID;
+				$gets = get_pages( array(
+					'meta_key'    => 'category_id',
+					'meta_value'  => $cat_ID,
+					'post_status' => 'publish'
+				) );
+
+				if ( $gets )
+				{
+					$table_of_contents += $gets;
+				}
+			}
+		}
+
+		return $table_of_contents;
+	}
+
+	private function load_settings( $post )
 	{
 		$is_reversed = TRUE;
 		$within_category = TRUE;
 
 		$next_post = get_next_post( $within_category );
 		$pre_post = get_previous_post( $within_category );
-		// _debug( $next_post );
 
 		$pre_nav = '';
 		if ( $pre_post && $pre_post->ID !== '' )
@@ -55,22 +79,21 @@ class Chapter_Navigation
 			$this->links[$position]['title'] = $next_post->post_title;
 		}
 
-		// Get category number.
-        $catnum = get_post_meta( $post->ID, 'category_id', TRUE );
+		// Get post's category IDs.
+		$categories = get_the_category( $post->ID );
+		// _debug($categories);
 
-		// Get table of content.
-		$table_of_content = get_pages( array(
-			'meta_key'    => 'category_id',
-			'meta_value'  => $catnum,
-			'post_status' => 'publish'
-		) );
+		// Get table of contents of all category IDs.
+		$table_of_contents = $this->get_table_of_contents( $categories );
+		// _debug($table_of_contents);
 
-		if ( is_array( $table_of_content ) )
+		if ( $table_of_contents )
 		{
-			if ( count( $table_of_content ) > 1 )
+			// Try to filter out mismatched templates.
+			if ( count( $table_of_contents ) > 1 )
 			{
-				$table_of_content = array_filter(
-					$table_of_content,
+				$table_of_contents = array_filter(
+					$table_of_contents,
 					function ( $value )
 					{
 						$metadata = get_post_meta( $value->ID );
@@ -83,11 +106,12 @@ class Chapter_Navigation
 				);
 			}
 
-			if ( count( $table_of_content ) )
+			// If any matches left, use the first one.
+			if ( count( $table_of_contents ) )
 			{
-				$this->links['table_of_content']['url']   = get_permalink( $table_of_content[0]->ID );
+				$this->links['table_of_content']['url']   = get_permalink( $table_of_contents[0]->ID );
 				$this->links['table_of_content']['icon']  = 'icon-list-alt';
-				$this->links['table_of_content']['title'] = $table_of_content[0]->post_title;
+				$this->links['table_of_content']['title'] = $table_of_contents[0]->post_title;
 			}
 		}
 	}
