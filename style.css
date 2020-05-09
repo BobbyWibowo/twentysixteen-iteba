@@ -4260,6 +4260,7 @@ p > video {
 }
 
 .comment-list.tise .collapse-message > .fn {
+	font-family: Montserrat, "Helvetica Neue", sans-serif;
 	font-weight: normal;
 	padding-right: .5em;
 }
