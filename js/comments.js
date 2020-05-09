@@ -72,7 +72,7 @@
 		const author = commentBody.querySelector( '.comment-author .fn' )
 		const metadata = commentBody.querySelector( '.comment-metadata > a' )
 		if (author || metadata) {
-			message.innerHTML = ( author ? author.innerHTML : '' ) +
+			message.innerHTML = ( author ? author.outerHTML : '' ) +
 				( metadata ? metadata.outerHTML : '' ) +
 				message.innerHTML
 		}

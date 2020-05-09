@@ -4259,7 +4259,8 @@ p > video {
 	transition: .25s opacity;
 }
 
-.comment-list.tise .collapse-message a {
+.comment-list.tise .collapse-message > .fn {
+	font-weight: normal;
 	padding-right: .5em;
 }
 
