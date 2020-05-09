@@ -403,7 +403,7 @@ add_action( 'wp_head', 'twentysixteen_javascript_detection', 0 );
  */
 function twentysixteen_scripts() {
 	// Version string for files that I often modify.
-	$styleVersion = '20200510-1';
+	$styleVersion = '20200510-2';
 
 	// Add custom fonts, used in the main stylesheet.
 	wp_enqueue_style( 'twentysixteen-fonts', twentysixteen_fonts_url(), array(), null );
