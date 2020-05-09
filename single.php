@@ -31,9 +31,10 @@ get_header(); ?>
 						'prev_text' => _x( '<span class="meta-nav">Published in</span><span class="post-title">%title</span>', 'Parent post link', 'twentysixteen' ),
 					)
 				);
-			} elseif ( is_singular( 'post' ) ) {
+
 				// NOTE: We don't need this on ITEBA.
-				/* // Previous/next post navigation.
+			} /* elseif ( is_singular( 'post' ) ) {
+				// Previous/next post navigation.
 				the_post_navigation(
 					array(
 						'next_text' => '<span class="meta-nav" aria-hidden="true">' . __( 'Next', 'twentysixteen' ) . '</span> ' .
@@ -44,8 +45,7 @@ get_header(); ?>
 							'<span class="post-title">%title</span>',
 					)
 				);
-				*/
-			}
+			} */
 
 			// End the loop.
 		endwhile;

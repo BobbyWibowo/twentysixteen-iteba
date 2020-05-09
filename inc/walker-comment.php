@@ -88,7 +88,12 @@ class TISE_Walker_Comment extends Walker_Comment
 						echo $this->get_comment_author_link_mobile( $comment, $args['avatar_size'] );
 						?>
 					</div>
-					<?php hmn_cp_the_comment_upvote_form(); ?>
+					<?php
+						// Comment Popularity plugin.
+						if ( function_exists( 'hmn_cp_the_comment_upvote_form' ) ) {
+							hmn_cp_the_comment_upvote_form();
+						}
+					?>
 					<div class="threadline-div"><i class="threadline"></i></div>
 				</div><!-- .threadlines -->
 
@@ -109,19 +114,6 @@ class TISE_Walker_Comment extends Walker_Comment
 									);
 								?>
 							</div><!-- .comment-author -->
-
-							<!--
-							<div class="comment-metadata">
-								<a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
-									<time datetime="<?php comment_time( 'c' ); ?>">
-										<?php
-											/* translators: 1: Comment date, 2: Comment time. */
-											printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
-										?>
-									</time>
-								</a>
-								<?php edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ); ?>
-							</div>--><!-- .comment-metadata -->
 
 							<?php if ( '0' == $comment->comment_approved ) : ?>
 							<em class="comment-awaiting-moderation"><?php echo $moderation_note; ?></em>
