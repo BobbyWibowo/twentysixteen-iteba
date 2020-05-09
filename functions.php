@@ -107,6 +107,17 @@ if ( ! function_exists( 'twentysixteen_setup' ) ) :
 		);
 
 		/**
+		 * Chapter navigation. Simplified.
+		 */
+		require get_template_directory() . '/inc/chapter-navigation.php';
+
+		$Chapter_Navigation = new Chapter_Navigation();
+
+		if( isset( $Chapter_Navigation ) ) {
+			add_filter( 'the_content', array( &$Chapter_Navigation, 'render' ) );
+		}
+
+		/**
 		 * Custom comment walker.
 		 */
 		require get_template_directory() . '/inc/walker-comment.php';
@@ -390,7 +401,7 @@ add_action( 'wp_head', 'twentysixteen_javascript_detection', 0 );
  */
 function twentysixteen_scripts() {
 	// Version string for files that I often modify.
-	$devStyleVersion = '20200509-1';
+	$devStyleVersion = '20200509-3';
 
 	// Add custom fonts, used in the main stylesheet.
 	wp_enqueue_style( 'twentysixteen-fonts', twentysixteen_fonts_url(), array(), null );
@@ -399,7 +410,7 @@ function twentysixteen_scripts() {
 	wp_enqueue_style( 'genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1' );
 
 	// Add Fontello.
-	wp_enqueue_style( 'fontello', get_template_directory_uri() . '/fontello/css/fontello.css', array(), '39e23005' );
+	wp_enqueue_style( 'fontello', get_template_directory_uri() . '/fontello/css/fontello.css', array(), 'b2146fa0' );
 
 	// Theme stylesheet.
 	wp_enqueue_style( 'twentysixteen-style', get_stylesheet_uri(), array(), $devStyleVersion );

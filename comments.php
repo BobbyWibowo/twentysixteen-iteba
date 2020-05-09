@@ -49,8 +49,8 @@ $useCustomWalker = true;
 				</div>
 				<div class="comments-cc-arrow"></div>
 			</div>
-			<?php // TODO: Use i18n function
-				echo '1' === $comments_number ? 'Comment' : 'Comments'; ?>
+			<?php
+				echo __( '1' === $comments_number ? 'Comment' : 'Comments' ); ?>
 		</h2>
 
 		<?php

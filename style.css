@@ -1,8 +1,8 @@
 /*
 Theme Name: Twenty Sixteen (Translateindo)
-Theme URI: https://github.com/BobbyWibowo
+Theme URI: https://github.com/BobbyWibowo/twentysixteen-iteba
 Author: the WordPress team & Bobby Wibowo
-Author URI: https://github.com/BobbyWibowo
+Author URI: https://github.com/BobbyWibowo/twentysixteen-iteba
 Description: Customized while 🕺🎶 by Bobby Wibowo. Cue the original description: "Twenty Sixteen is a modernized take on an ever-popular WordPress layout — the horizontal masthead with an optional right sidebar that works perfectly for blogs and websites. It has custom color options with beautiful default color schemes, a harmonious fluid grid using a mobile-first approach, and impeccable polish in every detail. Twenty Sixteen will make your WordPress look beautiful everywhere."
 Version: 2.1-DEV
 Requires at least: 4.4
@@ -4033,10 +4033,6 @@ p > video {
 	display: none !important;
 }
 
-.site-main > article {
-	margin-bottom: 1.5em;
-}
-
 .no-comments {
 	border-top: 4px solid #1a1a1a !important;
 	font-size: 1.25rem;
@@ -4057,7 +4053,7 @@ p > video {
 .comments-title {
 	border: 0;
 	font-weight: normal;
-	border-bottom: 1px solid #666666;
+	border-bottom: 1px solid #d1d1d1 !important;
 	padding-bottom: 1em;
 	margin-bottom: 1em;
 	max-width: 950px;
@@ -4089,7 +4085,7 @@ p > video {
 .comments-count .comments-cc-value {
 	border-radius: 0%;
 	background: #666666;
-	color: #ffffff;
+	color: white;
 	font-size: 15px;
 	display: inline-block;
 	line-height: 18px;
@@ -4451,6 +4447,83 @@ p > video {
 
 	body.admin-bar #growls.default {
 		top: 53px;
+	}
+}
+
+/* Chapter navigation */
+
+.chapter-navigation {
+	display: flex;
+	margin-bottom: 1.75em;
+	flex-direction: column;
+}
+
+.chapter-navigation:last-child {
+	margin-bottom: 0;
+}
+
+.chapter-navigation.is-top {
+	flex-direction: row;
+}
+
+.chapter-navigation .cn-col {
+	flex: 1 1 0;
+	display: inline-flex;
+	border: 1px solid #620089;
+	box-shadow: none;
+	font-family: Montserrat, "Helvetica Neue", sans-serif;
+	padding: calc(.5em - 1px) 1em;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.chapter-navigation:not(.is-top) .cn-col:nth-child(1):not(:last-child) {
+	border-bottom-width: 0;
+}
+
+.chapter-navigation:not(.is-top) .cn-col:nth-child(3):not(:first-child) {
+	border-top-width: 0;
+}
+
+.chapter-navigation.is-top .cn-col:nth-child(1):not(:last-child) {
+	border-right-width: 0;
+}
+
+.chapter-navigation.is-top .cn-col:nth-child(3):not(:first-child) {
+	border-left-width: 0;
+}
+
+.chapter-navigation .cn-col:hover {
+	color: white;
+	background-color: #620089;
+}
+
+.chapter-navigation [class^="icon-"]:first-child:not(:last-child),
+.chapter-navigation [class*=" icon-"]:first-child:not(:last-child) {
+	margin-left: calc(-.5em - 1px);
+	margin-right: .25em;
+}
+
+.chapter-navigation [class^="icon-"]:last-child:not(:first-child),
+.chapter-navigation [class*=" icon-"]:last-child:not(:first-child) {
+	margin-left: .25em;
+	margin-right: calc(-.5em - 1px);
+}
+
+@media screen and (min-width: 75em) {
+	.chapter-navigation:not(.is-top) {
+		flex-direction: row;
+	}
+
+	.chapter-navigation:not(.is-top) .cn-col:nth-child(1):not(:last-child) {
+		border-right-width: 0;
+		border-bottom-width: 1px;
+	}
+
+	.chapter-navigation:not(.is-top) .cn-col:nth-child(3):not(:first-child) {
+		border-left-width: 0;
+		border-top-width: 1px;
 	}
 }
 
