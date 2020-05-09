@@ -5,6 +5,7 @@ An ongoing customization attempt at the Twenty Sixteen WordPress theme for use a
 ## Notable customizations
 
 * Reddit-inspired nested comments. This needs [Comment Popularity](https://github.com/BobbyWibowo/comment-popularity) plugin for vote up/down buttons.
+* Chapters navigation.
 * and maybe more in the future...?
 
 ## License
