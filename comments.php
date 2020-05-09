@@ -40,26 +40,17 @@ $useCustomWalker = true;
 
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title">
-			<?php
-				$comments_number = get_comments_number();
-			if ( '1' === $comments_number ) {
-				/* translators: %s: Post title. */
-				printf( _x( 'One thought on &ldquo;%s&rdquo;', 'comments title', 'twentysixteen' ), get_the_title() );
-			} else {
-				printf(
-					/* translators: 1: Number of comments, 2: Post title. */
-					_nx(
-						'%1$s thought on &ldquo;%2$s&rdquo;',
-						'%1$s thoughts on &ldquo;%2$s&rdquo;',
-						$comments_number,
-						'comments title',
-						'twentysixteen'
-					),
-					number_format_i18n( $comments_number ),
-					get_the_title()
-				);
-			}
-			?>
+			<div class="comments-count">
+				<div class="comments-cc-value">
+				<?php
+					$comments_number = get_comments_number();
+					echo number_format_i18n( $comments_number );
+				?>
+				</div>
+				<div class="comments-cc-arrow"></div>
+			</div>
+			<?php // TODO: Use i18n function
+				echo '1' === $comments_number ? 'Comment' : 'Comments'; ?>
 		</h2>
 
 		<?php
@@ -79,7 +70,7 @@ $useCustomWalker = true;
 					$args = array(
 						'style'       => 'ul',
 						'short_ping'  => true,
-						'avatar_size' => 42,
+						'avatar_size' => 49,
 					);
 
 					// Use our custom walker if it's available.

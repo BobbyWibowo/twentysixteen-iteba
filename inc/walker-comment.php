@@ -82,7 +82,7 @@ class TISE_Walker_Comment extends Walker_Comment
 			<<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?>>
 
 				<div class="threadline-column">
-					<div class="expand-button is-hidden"><a><i class="icon-expand-button"></i></a></div>
+					<div class="expand-button is-hidden"><i class="icon-expand-button"></i></div>
 					<div class="comment-author vcard">
 						<?php
 						echo $this->get_comment_author_link_mobile( $comment, $args['avatar_size'] );
@@ -110,6 +110,7 @@ class TISE_Walker_Comment extends Walker_Comment
 								?>
 							</div><!-- .comment-author -->
 
+							<!--
 							<div class="comment-metadata">
 								<a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
 									<time datetime="<?php comment_time( 'c' ); ?>">
@@ -120,7 +121,7 @@ class TISE_Walker_Comment extends Walker_Comment
 									</time>
 								</a>
 								<?php edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ); ?>
-							</div><!-- .comment-metadata -->
+							</div>--><!-- .comment-metadata -->
 
 							<?php if ( '0' == $comment->comment_approved ) : ?>
 							<em class="comment-awaiting-moderation"><?php echo $moderation_note; ?></em>
@@ -131,20 +132,41 @@ class TISE_Walker_Comment extends Walker_Comment
 							<?php comment_text(); ?>
 						</div><!-- .comment-content -->
 
-						<?php
-						comment_reply_link(
-							array_merge(
-								$args,
-								array(
-									'add_below' => 'div-comment',
-									'depth'     => $depth,
-									'max_depth' => $args['max_depth'],
-									'before'    => '<div class="reply">',
-									'after'     => '</div>',
+						<div class="comment-controls">
+							<?php
+							comment_reply_link(
+								array_merge(
+									$args,
+									array(
+										'add_below'  => 'div-comment',
+										'depth'      => $depth,
+										'max_depth'  => $args['max_depth'],
+										'before'     => '<div class="reply">',
+										'reply_text' => '<i class="icon-chat-empty"></i>' . __( 'Reply' ),
+										'after'      => '</div>',
+									)
 								)
-							)
-						);
-						?>
+							);
+							?>
+							<?php
+							edit_comment_link(
+								'<i class="icon-edit"></i>' . __( 'Edit' ),
+								'<div class="edit-link">',
+								'</div>'
+							);
+							?>
+							<div class="date">
+								<a class="date" href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
+									<i class="icon-clock"></i>
+									<time datetime="<?php comment_time( 'c' ); ?>">
+										<?php
+											/* translators: 1: Comment date, 2: Comment time. */
+											printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
+										?>
+									</time>
+								</a>
+							</div>
+						</div>
 					</article><!-- .comment-body -->
 				<?php /* $this->start_el() will close <div class="comment-column"> */
 		}

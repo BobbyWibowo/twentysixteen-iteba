@@ -1,4 +1,7 @@
 
 .icon-plus-circled:before { content: '\e800'; } /* '' */
-.icon-up-big:before { content: '\e801'; } /* '' */
-.icon-down-big:before { content: '\e802'; } /* '' */
+.icon-down-open:before { content: '\e801'; } /* '' */
+.icon-up-open:before { content: '\e803'; } /* '' */
+.icon-edit:before { content: '\e804'; } /* '' */
+.icon-clock:before { content: '\e805'; } /* '' */
+.icon-chat-empty:before { content: '\f0e6'; } /* '' */

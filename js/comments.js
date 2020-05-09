@@ -1,3 +1,27 @@
+// https://stackoverflow.com/a/17989803/10044786
+
+( function( doc, proto ) {
+	try { // check if browser supports :scope natively
+		doc.querySelector( ':scope body' );
+	} catch ( err ) { // polyfill native methods if it doesn't
+		[ 'querySelector', 'querySelectorAll' ].forEach( function( method ) {
+			var nativ = proto[ method ];
+			proto[ method ] = function(selectors) {
+				if ( /(^|,)\s*:scope/.test( selectors ) ) { // only if selectors contains :scope
+					var id = this.id; // remember current element id
+					this.id = 'ID_' + Date.now(); // assign new unique id
+					selectors = selectors.replace( /((^|,)\s*):scope/g, '$1#' + this.id ); // replace :scope with #ID
+					var result = doc[ method ]( selectors );
+					this.id = id; // restore previous id
+					return result;
+				} else {
+					return nativ.call( this, selectors ); // use native code for other selectors
+				}
+			}
+		} );
+	}
+} )( window.document, Element.prototype );
+
 /**
  * Emulating Reddit's nested comments.
  */
@@ -24,6 +48,10 @@
 		const expandButton = comment.querySelector( selectors.expandButton )
 		if ( !expandButton.classList.contains( 'is-hidden' ) )
 			return
+
+		// Close reply form if exist within thread.
+		const cancelReply = comment.querySelector( '#cancel-comment-reply-link' )
+		if ( cancelReply ) cancelReply.click()
 
 		const message = document.createElement( 'div' )
 		message.className = 'collapse-message'
@@ -110,9 +138,9 @@
 			threadline = event.target
 		else if ( event.target.classList.contains( 'threadline' ) )
 			threadline = event.target.parentNode
-		else if ( event.target.classList.contains( 'icon-expand-button' ) )
-			expandButton = event.target.parentNode.parentNode
 		else if ( event.target.classList.contains( 'expand-button' ) )
+			expandButton = event.target
+		else if ( event.target.classList.contains( 'icon-expand-button' ) )
 			expandButton = event.target.parentNode
 
 		const target = threadline || expandButton
@@ -129,10 +157,62 @@
 	}, true )
 
 	// On first page load, collapse all level 4 comments.
+	// TODO: Copy Reddit's design for pre-collapsed threads.
+	/*
 	const targetLevel = 6
 	const targets = commentList.querySelectorAll( '.comment.depth-' + targetLevel )
 	if ( targets.length ) {
 		for ( let i = 0; i < targets.length; i++ )
 			collapseCommentsThread( targets[ i ] )
+	}
+	*/
+
+	function relativeDate ( datetime ) {
+		// Source: https://stackoverflow.com/a/7641812/10044786
+		const date = new Date( datetime )
+		const delta = Math.round( ( +new Date - date ) / 1000 )
+
+		const minute = 60
+		const hour = minute * 60
+		const day = hour * 24
+
+		let result
+		if ( delta < 30 )
+			result = 'just now'
+		else if ( delta < minute )
+			result = delta + ' seconds ago'
+		else if ( delta < 2 * minute )
+			result = 'a minute ago'
+		else if ( delta < hour )
+			result = Math.floor( delta / minute ) + ' minutes ago'
+		else if ( Math.floor( delta / hour ) === 1 )
+			result = '1 hour ago'
+		else if ( delta < day )
+			result = Math.floor( delta / hour ) + ' hours ago'
+		else if ( delta < day * 2 )
+			result = 'yesterday'
+		else
+			result = Math.floor( delta / day ) + ' days ago'
+
+		return result
+	}
+
+	// Activate Moment.js
+	const dates = commentList.getElementsByTagName( 'time' )
+	if ( dates.length ) {
+		for ( let i = 0; i < dates.length; i++ ) {
+			const datetime = dates[ i ].getAttribute( 'datetime' )
+			if ( datetime ) {
+				const container = dates[ i ].parentNode
+				if ( container ) {
+					container.setAttribute( 'title', dates[ i ].innerHTML.trim() )
+					container.setAttribute( 'aria-label', dates[ i ].innerHTML.trim() )
+				} else {
+					dates[ i ].setAttribute( 'title', dates[ i ].innerHTML.trim() )
+					dates[ i ].setAttribute( 'aria-label', dates[ i ].innerHTML.trim() )
+				}
+				dates[ i ].innerHTML = relativeDate( datetime ) || dates[ i ].innerHTML
+			}
+		}
 	}
 } )();
