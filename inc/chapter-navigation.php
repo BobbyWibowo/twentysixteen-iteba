@@ -32,20 +32,24 @@ class Chapter_Navigation
 	{
 		$table_of_contents = array();
 
-		for ( $i = 0, $size = count( $categories ); $i < $size; ++$i )
+		$size = count( $categories );
+		if ( $size )
 		{
-			if ( property_exists( $categories[$i], 'cat_ID' ) )
+			for ( $i = 0; $i < $size; ++$i )
 			{
-				$cat_ID = $categories[$i]->cat_ID;
-				$gets = get_pages( array(
-					'meta_key'    => 'category_id',
-					'meta_value'  => $cat_ID,
-					'post_status' => 'publish'
-				) );
-
-				if ( $gets )
+				if ( property_exists( $categories[$i], 'cat_ID' ) )
 				{
-					$table_of_contents += $gets;
+					$cat_ID = $categories[$i]->cat_ID;
+					$gets = get_pages( array(
+						'meta_key'    => 'category_id',
+						'meta_value'  => $cat_ID,
+						'post_status' => 'publish'
+					) );
+
+					if ( $gets )
+					{
+						$table_of_contents += $gets;
+					}
 				}
 			}
 		}
@@ -81,38 +85,35 @@ class Chapter_Navigation
 
 		// Get post's category IDs.
 		$categories = get_the_category( $post->ID );
-		// _debug($categories);
 
 		// Get table of contents of all category IDs.
 		$table_of_contents = $this->get_table_of_contents( $categories );
-		// _debug($table_of_contents);
 
-		if ( $table_of_contents )
+		// Try to filter out mismatched templates.
+		if ( count( $table_of_contents ) > 1 )
 		{
-			// Try to filter out mismatched templates.
-			if ( count( $table_of_contents ) > 1 )
-			{
-				$table_of_contents = array_filter(
-					$table_of_contents,
-					function ( $value )
-					{
-						$metadata = get_post_meta( $value->ID );
-						if ( $metadata && is_array( $metadata['_wp_page_template' ] ) )
-						{
-							return in_array( 'tableOfContent.php', $metadata['_wp_page_template' ], TRUE );
-						}
-						return FALSE;
-					}
-				);
-			}
+			$table_of_contents = array_filter(
+				$table_of_contents,
+				function ( $value )
+				{
+					$metadata = get_post_meta( $value->ID );
 
-			// If any matches left, use the first one.
-			if ( count( $table_of_contents ) )
-			{
-				$this->links['table_of_content']['url']   = get_permalink( $table_of_contents[0]->ID );
-				$this->links['table_of_content']['icon']  = 'icon-list-alt';
-				$this->links['table_of_content']['title'] = $table_of_contents[0]->post_title;
-			}
+					if ( $metadata && is_array( $metadata['_wp_page_template' ] ) )
+					{
+						return in_array( 'tableOfContent.php', $metadata['_wp_page_template' ], TRUE );
+					}
+
+					return FALSE;
+				}
+			);
+		}
+
+		// Use the first match if exists.
+		if ( isset( $table_of_contents[0] ) )
+		{
+			$this->links['table_of_content']['url']   = get_permalink( $table_of_contents[0]->ID );
+			$this->links['table_of_content']['icon']  = 'icon-list-alt';
+			$this->links['table_of_content']['title'] = $table_of_contents[0]->post_title;
 		}
 	}
 
@@ -146,7 +147,10 @@ class Chapter_Navigation
 			if ( $this->links[$key]['url'] )
 			{
 				$config = $this->links[$key];
-				$is_simple = 'table_of_content' === $key ? $simple_toc_title : $simple_titles;
+
+				$is_simple = 'table_of_content' === $key
+					? $simple_toc_title
+					: $simple_titles;
 
 				$icon = $hide_icons || !$config['icon']
 					? ''
@@ -161,7 +165,7 @@ class Chapter_Navigation
 					: $title;
 
 				$a_title = $hide_titles || $is_simple
-					? ( $config['title'] ? $config['title'] : $simples[$key] )
+					? ( $config['title'] ?: $simples[$key] )
 					: $simples[$key];
 
 				$a_text = 'next_chapter' === $key
@@ -169,7 +173,7 @@ class Chapter_Navigation
 					: $icon . $text;
 
 				$result .= '
-					<a class="cn-col ' . $config['class'] . '"
+					<a class="cn-col ' . ( $config['class'] ?: '' ) . '"
 						href="' . $config['url'] . '"
 						title="' . $a_title . '">
 						' . $a_text . '
@@ -179,7 +183,7 @@ class Chapter_Navigation
 		}
 
 		return '
-			<div class="chapter-navigation' . ( $class ? ' ' . $class : '' ) . '">
+			<div class="chapter-navigation ' . ( $class ?: '' ) . '">
 				' . $result . '
 			</div>
 		';
