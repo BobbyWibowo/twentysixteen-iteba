@@ -85,7 +85,7 @@ class Chapters_List
 			? ( '
 				<div class="cl-header is-noselect">
 					<i class="icon-cl-toggle"></i>
-					' . $title . '
+					' . __( 'Chapters' ) . ' ' . $title . '
 				</div>
 				' )
 			: '';
