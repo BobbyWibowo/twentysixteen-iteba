@@ -6,16 +6,13 @@
 
 class Chapters_List
 {
-	private $chapters = array();
-
-	private $get_dates = FALSE;
-	private $query_fields = array(
-		'id',
-		'post_title'
-	);
-
 	private $transient_prefix = '';
 	private $transient_expiration = 21600; // in seconds, 3600 = 1 hour.
+
+	private $categories = '';
+	private $transient_name = '';
+	private $get_dates = FALSE;
+	private $chapters = array();
 
 	public function __construct( $version = NULL )
 	{
@@ -29,16 +26,14 @@ class Chapters_List
 		}
 	}
 
-	private function load_chapters( $category_IDs )
+	private function load_chapters()
 	{
 		$gets = get_posts( array(
 			'numberposts' => -1,
-			// 'category'    => implode( ',', $category_IDs ),
-			'category__in' => $category_IDs,
+			'category'    => $this->categories,
 			'order'       => 'ASC',
 			'post_type'   => 'post',
-			'post_status' => 'publish',
-			'fields'      => $this->query_fields
+			'post_status' => 'publish'
 		) );
 
 		$size = count( $gets );
@@ -67,7 +62,7 @@ class Chapters_List
 
 		if ( count( $category_IDs ) )
 		{
-			$this->load_chapters( $category_IDs );
+			$this->categories = implode( ',', $category_IDs );
 		}
 	}
 
@@ -211,31 +206,38 @@ class Chapters_List
 		if ( is_page_template( 'tableOfContent.php' ) && in_the_loop() && is_main_query() )
 		{
 			global $post;
+			$this->load_settings( $post, array(
+				'get_dates' => 10 // N amount of recent posts whose dates will be queried.
+			) );
 
-			// Attempt to use cache.
-			$transient_name = $this->transient_prefix . $post->ID;
-			$transient = get_transient( $transient_name );
-
-			if ( FALSE === $transient )
+			// Proceed only if the ToC has been properly set up with category IDs.
+			if ( $this->categories )
 			{
-				$options = array(
-					'get_dates' => 10 // N amount of recent posts whose dates will be queried.
-				);
+				// Attempt to use cache.
+				$this->transient_name = $this->transient_prefix . $post->ID . '-'. $this->categories;
+				$transient = get_transient( $this->transient_name );
 
-				$this->load_settings( $post, $options );
+				if ( FALSE === $transient )
+				{
+					$this->load_chapters();
 
-				$chapters_list = $this->get_chapters_list( array(
-					'split_every' => 100
-				) );
+					$chapters_list = $this->get_chapters_list( array(
+						'split_every' => 100
+					) );
 
-				// Cache this, cause honestly this thing is very slow with large amount of chapters.
-				$transient_set = set_transient( $transient_name, $chapters_list, $transient_expiration );
+					// Cache this, cause honestly this thing is very slow with large amount of chapters.
+					$transient_set = set_transient(
+						$this->transient_name,
+						$chapters_list,
+						$this->transient_expiration
+					);
 
-				return $content . $chapters_list;
-			}
-			else
-			{
-				return $content . $transient;
+					return $content . $chapters_list;
+				}
+				else
+				{
+					return $content . $transient;
+				}
 			}
 		}
 
