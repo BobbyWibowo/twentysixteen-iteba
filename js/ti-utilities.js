@@ -322,7 +322,7 @@
 			// Logic for belongings.
 			if ( event.target.classList.contains( 'cl-header' ) )
 				toggle( event.target )
-			else if ( event.target.classList.contains( 'icon-cl-toggle' ) )
+			else if ( event.target.parentNode && event.target.parentNode.classList.contains( 'cl-header' ) )
 				toggle( event.target.parentNode )
 		}, true )
 
@@ -384,7 +384,7 @@
 				}
 			}
 
-			sortButton.addEventListener( 'click', toggleSort )
+			sortButton.addEventListener( 'click', toggleSort, true )
 			sortButton.classList.remove( 'is-hidden' )
 
 			if ( readCookie( 'cl-is-descending' ) === '1' )

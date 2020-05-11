@@ -33,7 +33,8 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 }
 
 // Version string for various things I developed in this customization.
-$DEV_THEME_VERSION = '20200511-11';
+$DEV_THEME_VERSION = '20200511-12';
+$DEV_TRANSIENT_VERSION = '20200511-11';
 $DEV_FONTELLO_VERSION = '20200511-f6bc47aa';
 
 // TODO: Don't forget to remove this.
@@ -127,7 +128,7 @@ if ( ! function_exists( 'twentysixteen_setup' ) ) :
 		 */
 		require get_template_directory() . '/inc/chapters-list.php';
 
-		$Chapters_List = new Chapters_List( $GLOBALS['DEV_THEME_VERSION'] );
+		$Chapters_List = new Chapters_List( $GLOBALS['DEV_TRANSIENT_VERSION'] );
 		if( isset( $Chapters_List ) ) {
 			add_filter( 'the_content', array( &$Chapters_List, 'render' ) );
 		}
