@@ -32,8 +32,11 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 	require get_template_directory() . '/inc/back-compat.php';
 }
 
+// Version string for various things I developed in this customization.
+$DEV_THEME_VERSION = '20200511-7';
+$DEV_FONTELLO_VERSION = '20200511-f6bc47aa';
+
 // TODO: Don't forget to remove this.
-/*
 function _debug( $anything ){
 	add_action(
 		'shutdown',
@@ -44,7 +47,6 @@ function _debug( $anything ){
 		}
 	);
 }
-*/
 
 if ( ! function_exists( 'twentysixteen_setup' ) ) :
 	/**
@@ -114,9 +116,18 @@ if ( ! function_exists( 'twentysixteen_setup' ) ) :
 		require get_template_directory() . '/inc/chapter-navigation.php';
 
 		$Chapter_Navigation = new Chapter_Navigation();
-
 		if( isset( $Chapter_Navigation ) ) {
 			add_filter( 'the_content', array( &$Chapter_Navigation, 'render' ) );
+		}
+
+		/**
+		 * Chapters list in Table of Content pages.
+		 */
+		require get_template_directory() . '/inc/chapters-list.php';
+
+		$Chapters_List = new Chapters_List( $GLOBALS['DEV_THEME_VERSION'] );
+		if( isset( $Chapters_List ) ) {
+			add_filter( 'the_content', array( &$Chapters_List, 'render' ) );
 		}
 
 		/**
@@ -402,9 +413,6 @@ add_action( 'wp_head', 'twentysixteen_javascript_detection', 0 );
  * @since Twenty Sixteen 1.0
  */
 function twentysixteen_scripts() {
-	// Version string for files that I often modify.
-	$styleVersion = '20200510-4';
-
 	// Add custom fonts, used in the main stylesheet.
 	wp_enqueue_style( 'twentysixteen-fonts', twentysixteen_fonts_url(), array(), null );
 
@@ -412,10 +420,10 @@ function twentysixteen_scripts() {
 	wp_enqueue_style( 'genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1' );
 
 	// Add Fontello.
-	wp_enqueue_style( 'fontello', get_template_directory_uri() . '/fontello/css/fontello.css', array(), 'b2146fa0' );
+	wp_enqueue_style( 'fontello', get_template_directory_uri() . '/fontello/css/fontello.css', array(), $GLOBALS['DEV_FONTELLO_VERSION'] );
 
 	// Theme stylesheet.
-	wp_enqueue_style( 'twentysixteen-style', get_stylesheet_uri(), array(), $styleVersion );
+	wp_enqueue_style( 'twentysixteen-style', get_stylesheet_uri(), array(), $GLOBALS['DEV_THEME_VERSION'] );
 
 	// Theme block stylesheet.
 	wp_enqueue_style( 'twentysixteen-block-style', get_template_directory_uri() . '/css/blocks.css', array( 'twentysixteen-style' ), '20190102' );
@@ -448,7 +456,7 @@ function twentysixteen_scripts() {
 
 	wp_enqueue_script( 'twentysixteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20181217', true );
 
-	wp_enqueue_script( 'twentysixteen-comments', get_template_directory_uri() . '/js/comments.js', array(), $styleVersion, true );
+	wp_enqueue_script( 'twentysixteen-ti-utilities', get_template_directory_uri() . '/js/ti-utilities.js', array(), $GLOBALS['DEV_THEME_VERSION'], true );
 
 	wp_localize_script(
 		'twentysixteen-script',

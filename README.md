@@ -5,7 +5,8 @@ An ongoing customization attempt at the Twenty Sixteen WordPress theme for use a
 ## Notable customizations
 
 * Reddit-inspired nested comments. This needs [Comment Popularity](https://github.com/BobbyWibowo/comment-popularity) plugin for vote up/down buttons.
-* Chapters navigation.
+* Chapters navigation on posts. Link to ToC if there exists a Table of Content page that is properly pointed to the post's category.
+* Chapters list on Table of Content page. Using Transients to cache the chapters list fragment for better performance (as otherwise it will become very slow with thousands of chapters).
 * and maybe more in the future...?
 
 ## License

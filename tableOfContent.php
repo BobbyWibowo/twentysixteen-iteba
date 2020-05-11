@@ -5,34 +5,11 @@
     <main id="main" class="site-main" role="main">
         <?php
         // Start the loop.
-        while ( have_posts() ) : the_post();
+		while ( have_posts() ) :
+			the_post();
 
             // Include the page content template.
             get_template_part( 'template-parts/content', 'page' );
-
-            // Get category number.
-            $catnum = get_post_meta( $post->ID, 'category_id', TRUE );
-
-            // Retrieve posts.
-            $args = array(
-                'numberposts' => -1,
-                'category' => $catnum,
-                'order' => 'ASC',
-                'post_type' => 'post'
-            );
-			$catPost = get_posts($args);
-            ?>
-
-            <!-- // output titles of each category -->
-             <h3>Chapters:</h3>
-             <div><p>
-             <?php
-			   	foreach ( $catPost as $post ) : setup_postdata( $post ); ?>
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> </br>
-
-			<?php endforeach;?>
-            </p></div>
-            <?php
 
             // If comments are open or we have at least one comment, load up the comment template.
             if ( comments_open() || get_comments_number() ) {

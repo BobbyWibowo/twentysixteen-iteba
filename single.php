@@ -32,8 +32,8 @@ get_header(); ?>
 					)
 				);
 
-				// NOTE: We don't need this on ITEBA.
 			} /* elseif ( is_singular( 'post' ) ) {
+				// NOTE: We don't need this on ITEBA.
 				// Previous/next post navigation.
 				the_post_navigation(
 					array(
