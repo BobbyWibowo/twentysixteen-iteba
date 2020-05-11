@@ -33,10 +33,11 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 }
 
 // Version string for various things I developed in this customization.
-$DEV_THEME_VERSION = '20200511-7';
+$DEV_THEME_VERSION = '20200511-8';
 $DEV_FONTELLO_VERSION = '20200511-f6bc47aa';
 
 // TODO: Don't forget to remove this.
+/*
 function _debug( $anything ){
 	add_action(
 		'shutdown',
@@ -47,6 +48,7 @@ function _debug( $anything ){
 		}
 	);
 }
+*/
 
 if ( ! function_exists( 'twentysixteen_setup' ) ) :
 	/**
