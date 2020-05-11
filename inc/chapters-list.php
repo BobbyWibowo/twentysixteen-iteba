@@ -15,7 +15,7 @@ class Chapters_List
 	);
 
 	private $transient_prefix = '';
-	private $transient_expiration = 3600; // in seconds, 3600 = 1 hour.
+	private $transient_expiration = 21600; // in seconds, 3600 = 1 hour.
 
 	public function __construct( $version = NULL )
 	{
