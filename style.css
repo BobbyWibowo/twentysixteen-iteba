@@ -4258,8 +4258,12 @@ a:visited {
 	font-family: Montserrat, "Helvetica Neue", sans-serif;
 }
 
-.comment-list.tise .comment:not(.depth-1) > .comment-column > .comment-body .fn {
+.comment-list.tise .comment-meta > .comment-author .fn a {
+	color: #620089;
+}
 
+.comment-list.tise .comment-meta > .comment-author .fn a:hover {
+	color: #686868;
 }
 
 .comment-list.tise .collapse-message {
