@@ -221,10 +221,10 @@ class Chapters_List
 					else
 					{
 						$matches = array();
-						$match = preg_match( '/(\d+[a-zA-Z]|\d+\.\d{1,2}|\d+)(\D|$)/', $chapter->post_title, $matches );
+						$match = preg_match( '/(\d+[a-zA-Z]|\d+\.\d{1}|\d+)(\D|$)/', $chapter->post_title, $matches );
 						if ( 1 === $match )
 						{
-							$parsed_number = trim( $matches[0] );
+							$parsed_number = trim( $matches[1] );
 
 							// Increase chapter count if it is the same, 1 number higher, or first valid chapter.
 							$diff = ( int ) $parsed_number - ( int ) $chapter_number;
