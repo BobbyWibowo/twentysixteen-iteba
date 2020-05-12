@@ -9,22 +9,25 @@ class Chapter_Navigation
 {
 	private $links = array(
 		'previous_chapter' => array(
-			'url'   => NULL,
-			'icon'  => '',
-			'title' => '',
-			'class' => 'previous-chapter'
+			'url'    => NULL,
+			'icon'   => 'icon-left-open',
+			'title'  => '',
+			'class'  => 'previous-chapter',
+			'simple' => ''
 		),
 		'table_of_content' => array(
-			'url'   => NULL,
-			'icon'  => '',
-			'title' => '',
-			'class' => 'table-of-content'
+			'url'    => NULL,
+			'icon'   => 'icon-list-alt',
+			'title'  => '',
+			'class'  => 'table-of-content',
+			'simple' => ''
 		),
 		'next_chapter' => array(
-			'url'   => NULL,
-			'icon'  => '',
-			'title' => '',
-			'class' => 'next-chapter'
+			'url'    => NULL,
+			'icon'   => 'icon-right-open',
+			'title'  => '',
+			'class'  => 'next-chapter',
+			'simple' => ''
 		)
 	);
 
@@ -60,23 +63,34 @@ class Chapter_Navigation
 
 		$next_post = get_next_post( $within_category );
 		$pre_post = get_previous_post( $within_category );
+		$simples = array(
+			'previous_chapter' => __( 'Previous Chapter' ),
+			'table_of_content' => __( 'Table of Content' ),
+			'next_chapter'     => __( 'Next Chapter' ),
+			'coming_soon'      => __( 'Coming soon!' )
+		);
 
 		$pre_nav = '';
-		if ( $pre_post && $pre_post->ID !== '' )
+		if ( $pre_post && ( $pre_post->ID !== '' ) )
 		{
 			$position = $is_reversed ? 'previous_chapter' : 'next_chapter';
-			$this->links[$position]['url']   = get_permalink( $pre_post->ID );
-			$this->links[$position]['icon']  = 'icon-left-open';
-			$this->links[$position]['title'] = $pre_post->post_title;
+			$this->links[$position]['url']    = get_permalink( $pre_post->ID );
+			$this->links[$position]['title']  = $pre_post->post_title;
+			$this->links[$position]['simple'] = $simples[$position];
 		}
 
 		$next_nav = '';
-		if ( $next_post && $next_post->ID !== '' )
+		$position = $is_reversed ? 'next_chapter' : 'previous_chapter';
+		if ( $next_post && ( $next_post->ID !== '' ) )
 		{
-			$position = $is_reversed ? 'next_chapter' : 'previous_chapter';
 			$this->links[$position]['url']   = get_permalink( $next_post->ID );
-			$this->links[$position]['icon']  = 'icon-right-open';
 			$this->links[$position]['title'] = $next_post->post_title;
+			$this->links[$position]['simple'] = $simples[$position];
+		}
+		else
+		{
+			$this->links[$position]['icon'] = 'icon-clock';
+			$this->links[$position]['simple'] = $simples['coming_soon'];
 		}
 
 		// Get post's category IDs.
@@ -110,8 +124,8 @@ class Chapter_Navigation
 			if ( isset( $table_of_contents[0] ) )
 			{
 				$this->links['table_of_content']['url']   = get_permalink( $table_of_contents[0]->ID );
-				$this->links['table_of_content']['icon']  = 'icon-list-alt';
 				$this->links['table_of_content']['title'] = $table_of_contents[0]->post_title;
+				$this->links['table_of_content']['simple'] = $simples['table_of_content'];
 			}
 		}
 	}
@@ -129,12 +143,6 @@ class Chapter_Navigation
 		$simple_titles    = $this->get_value( $options['simple_titles'], FALSE );
 		$simple_toc_title = $this->get_value( $options['simple_toc_title'], TRUE );
 
-		$simples = array(
-			'previous_chapter' => __( 'Previous Chapter' ),
-			'table_of_content' => __( 'Table of Content' ),
-			'next_chapter'     => __( 'Next Chapter' )
-		);
-
 		$result = '';
 
 		$keys = array( 'previous_chapter', 'table_of_content', 'next_chapter' );
@@ -143,37 +151,41 @@ class Chapter_Navigation
 		{
 			$key = $keys[$i];
 
-			if ( $this->links[$key]['url'] )
+			if ( $this->links[$key]['url'] || ( 'next_chapter' === $key ) )
 			{
 				$config = $this->links[$key];
 
-				$is_simple = 'table_of_content' === $key
+				$is_simple = ( 'table_of_content' === $key )
 					? $simple_toc_title
 					: $simple_titles;
 
-				$icon = $hide_icons || !$config['icon']
+				$icon = ( $hide_icons || !$config['icon'] )
 					? ''
 					: '<i class="' . $config['icon'] . '"></i>';
 
-				$title = $is_simple || !$config['title']
-					? $simples[$key]
+				$title = ( $is_simple || !$config['title'] )
+					? $config['simple']
 					: $config['title'];
 
 				$text = $hide_titles
 					? ''
 					: $title;
 
-				$a_title = $hide_titles || $is_simple
-					? ( $config['title'] ?: $simples[$key] )
-					: $simples[$key];
+				$a_href_attr = $config['url']
+					? ( 'href="' . $config['url'] . '"' )
+					: 'disabled';
 
-				$a_text = 'next_chapter' === $key
-					? $text . $icon
-					: $icon . $text;
+				$a_title = ( $hide_titles || $is_simple )
+					? ( $config['title'] ?: $config['simple'] )
+					: $config['simple'];
+
+				$a_text = ( 'next_chapter' === $key )
+					? ( $text . $icon )
+					: ( $icon . $text );
 
 				$result .= '
 					<a class="cn-col is-noselect ' . ( $config['class'] ?: '' ) . '"
-						href="' . $config['url'] . '"
+						' . $a_href_attr . '
 						title="' . $a_title . '">' . $a_text . '</a>
 				';
 			}
@@ -207,10 +219,14 @@ class Chapter_Navigation
 			switch( $position )
 			{
 				case 'top':
-					return $this->get_navigation_block( $top_options ) . $content;
+					return
+						$this->get_navigation_block( $top_options )
+						. $content;
 				break;
 				case 'bottom':
-					return $content . $this->get_navigation_block( $bottom_options );
+					return
+						$content .
+						$this->get_navigation_block( $bottom_options );
 				break;
 				case 'both':
 				default:

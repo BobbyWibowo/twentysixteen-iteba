@@ -61,18 +61,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "7960517a504e42aea0641f15bc55fbed",
-      "css": "collapse",
-      "code": 61777,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "84bb9695b8662fa4783242f84c9e4682",
-      "css": "expand",
-      "code": 61776,
-      "src": "fontawesome"
-    },
-    {
       "uid": "3a7b6876c1817ce3b801b86c04a9d0af",
       "css": "sort-number-up",
       "code": 61794,

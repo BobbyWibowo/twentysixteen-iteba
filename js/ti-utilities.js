@@ -349,7 +349,7 @@
 					const block = blocks[i]
 
 					const body = block.querySelector( '.cl-body' )
-					if ( body.childNodes.length > 1 ) {
+					if ( body && body.childNodes.length > 1 ) {
 						let j = body.childNodes.length
 						while ( j-- )
 							body.appendChild( body.childNodes[j] )

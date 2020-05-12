@@ -33,23 +33,34 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 }
 
 // Version string for various things I developed in this customization.
-$DEV_THEME_VERSION = '20200511-12';
-$DEV_TRANSIENT_VERSION = '20200511-11';
-$DEV_FONTELLO_VERSION = '20200511-f6bc47aa';
+$DEV_THEME_VERSION = '20200513-1';
+$DEV_FONTELLO_VERSION = '20200513-c4ad3244';
 
-// TODO: Don't forget to remove this.
-/*
-function _debug( $anything ){
-	add_action(
-		'shutdown',
-		function () use ( $anything ) {
-			echo '<pre style="background-color: white;">';
-			var_dump( $anything );
-			echo '</pre>';
-		}
-	);
+// Try to keep Transient versions short, as they will be used in prefixes of transient names.
+$DEV_TRANSIENT_ENABLED = TRUE;
+// If immediate invalidations of Transients are required (e.g. structural changes), increment this.
+$DEV_TRANSIENT_VERSION = '4';
+$DEV_TRANSIENT_PREFIX = NULL; // Default is "TI_CL_".
+
+// TODO: Set to FALSE before merging or Git-committing.
+$DEV_DEBUG = FALSE;
+
+if ( TRUE === $DEV_DEBUG )
+{
+	function _debug() {
+		$anything = func_get_args();
+		add_action(
+			'shutdown',
+			function () use ( $anything ) {
+				echo '<pre style="background-color: white;">';
+				call_user_func_array( 'var_dump', $anything );
+				echo '</pre>';
+			}
+		);
+	}
+} else {
+	function _debug () { return NULL; }
 }
-*/
 
 if ( ! function_exists( 'twentysixteen_setup' ) ) :
 	/**
@@ -128,7 +139,11 @@ if ( ! function_exists( 'twentysixteen_setup' ) ) :
 		 */
 		require get_template_directory() . '/inc/chapters-list.php';
 
-		$Chapters_List = new Chapters_List( $GLOBALS['DEV_TRANSIENT_VERSION'] );
+		$Chapters_List = new Chapters_List(
+			$GLOBALS['DEV_TRANSIENT_ENABLED'],
+			$GLOBALS['DEV_TRANSIENT_VERSION'],
+			$GLOBALS['DEV_TRANSIENT_PREFIX'],
+		);
 		if( isset( $Chapters_List ) ) {
 			add_filter( 'the_content', array( &$Chapters_List, 'render' ) );
 		}

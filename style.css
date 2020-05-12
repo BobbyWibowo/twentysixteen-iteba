@@ -4029,6 +4029,10 @@ p > video {
  * BEGIN: Bobby's customization.
  */
 
+a:visited {
+	color: #72767d;
+}
+
 .is-hidden {
 	display: none !important;
 }
@@ -4501,9 +4505,22 @@ p > video {
 	border-left-width: 0;
 }
 
-.chapter-navigation .cn-col:hover {
+.chapter-navigation .cn-col:visited {
+	color: #620089;
+}
+
+.chapter-navigation .cn-col:not([disabled]):hover {
 	color: white;
 	background-color: #620089;
+}
+
+.chapter-navigation .cn-col[disabled] {
+	cursor: not-allowed;
+	color: #72767d;
+}
+
+.chapter-navigation .cn-col[disabled]:hover {
+	color: #72767d;
 }
 
 .chapter-navigation [class^="icon-"]:first-child:not(:last-child),
@@ -4541,10 +4558,24 @@ p > video {
 .cl-container .icon-sort-toggle:before { content: '\f162'; }
 .cl-container .icon-sort-toggle.is-descending:before { content: '\f163'; }
 
-.cl-container .cl-head .icon-sort-toggle {
+.cl-container .cl-title {
+	margin-bottom: 1.5em;
+}
+
+.cl-container .cl-title .icon-sort-toggle {
 	cursor: pointer;
 	float: right;
 	color: #620089;
+}
+
+.cl-container .cl-info {
+	margin-top: -1.25em;
+	margin-bottom: 1.25em;
+	font-size: .8em;
+}
+
+.cl-container .cl-info p {
+	margin-bottom: 0;
 }
 
 .cl-container .cl-lists,
@@ -4565,6 +4596,19 @@ p > video {
 	background-color: #620089;
 }
 
+.cl-container .cl-header .icon-cl-toggle {
+	margin-right: .5em;
+}
+
+.cl-container .cl-dates-info {
+	font-size: .8em;
+	font-style: italic;
+}
+
+.cl-container .cl-dates-info p:last-child {
+	margin-bottom: 0;
+}
+
 .cl-container .cl-body {
 	border: 1px solid #620089;
 	padding: calc(.75em - 1px) 1em calc(.75em - 1px) 1em ;
@@ -4579,6 +4623,7 @@ p > video {
 
 .cl-container .cl-body li a {
 	margin-right: .5em;
+	box-shadow: none;
 }
 
 .cl-container .cl-body li span {
