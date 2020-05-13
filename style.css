@@ -4521,6 +4521,7 @@ a:visited {
 .chapter-navigation .cn-col[disabled] {
 	cursor: not-allowed;
 	color: #72767d;
+	border-color: #72767d;
 }
 
 .chapter-navigation .cn-col[disabled]:hover {

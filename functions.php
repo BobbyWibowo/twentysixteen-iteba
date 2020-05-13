@@ -33,7 +33,7 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 }
 
 // Version string for various things I developed in this customization.
-$DEV_THEME_VERSION = '20200513-2';
+$DEV_THEME_VERSION = '20200513-3';
 $DEV_FONTELLO_VERSION = '20200513-c4ad3244';
 
 // Try to keep Transient versions short, as they will be used in prefixes of transient names.
