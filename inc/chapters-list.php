@@ -167,12 +167,28 @@ class Chapters_List
 		$size = count( $this->chapters );
 		if ( 0 !== $size )
 		{
-			// Chapter count. Use string with smart numbering.
-			$chapter_number = $this->settings['legacy_numbering']
-				? 0
-				: '';
+			// Chapter number.
+			$chapter_number = 0;
+
 			// Last chapter number for smart numbering.
 			$last_chapter_number = '';
+
+			// Tag to be excluded out from title before parsing their titles.
+			$tag_exclude = NULL;
+			if ( FALSE === $this->settings['legacy_numbering'] )
+			{
+				// Use string with smart numbering.
+				$chapter_number = '';
+
+				// Get name of first/primary category ID as replacement tag.
+				$category_ID = explode( ',', $this->query_args['category'], 1 )[0];
+				$category = get_category( $category_ID );
+				// Only use if the category's name contains digits.
+				if ( isset( $category ) && '' !== $category->name && ( 1 === preg_match( '/\d/', $category->name ) ) )
+				{
+					$tag_exclude = $category->name;
+				}
+			}
 
 			// Split once reached, then increment with $this->settings['split_every'].
 			$split_on = NULL;
@@ -220,11 +236,22 @@ class Chapters_List
 					}
 					else
 					{
+						$post_title = $chapter->post_title;
+						if ( NULL !== $tag_exclude )
+						{
+							$post_title = str_replace( $tag_exclude, '', $post_title );
+						}
+
 						$matches = array();
-						$match = preg_match( '/(\d+[a-zA-Z]|\d+\.\d{1}|\d+)(\D|$)/', $chapter->post_title, $matches );
+						$match = preg_match(
+							'/0?(\d+[a-zA-Z]|\d+\.\d{1}|\d+)([^a-zA-Z\d]|$)/',
+							$post_title,
+							$matches
+						);
+
 						if ( 1 === $match )
 						{
-							$parsed_number = trim( $matches[1] );
+							$parsed_number = $matches[1];
 
 							// Increase chapter count if it is the same, 1 number higher, or first valid chapter.
 							$diff = ( int ) $parsed_number - ( int ) $chapter_number;
@@ -360,7 +387,7 @@ class Chapters_List
 		}
 
 		$info = '';
-		if ( ( NULL === $first_number ) || ( $size > $total ) )
+		if ( ( $size > 0 ) && ( ( NULL === $first_number ) || ( $size > $total ) ) )
 		{
 			$parts_info = '';
 			if ( $parts_count > 0 )

@@ -33,13 +33,13 @@ if ( version_compare( $GLOBALS['wp_version'], '4.4-alpha', '<' ) ) {
 }
 
 // Version string for various things I developed in this customization.
-$DEV_THEME_VERSION = '20200513-3';
+$DEV_THEME_VERSION = '20200513-4';
 $DEV_FONTELLO_VERSION = '20200513-c4ad3244';
 
 // Try to keep Transient versions short, as they will be used in prefixes of transient names.
 $DEV_TRANSIENT_ENABLED = TRUE;
 // If immediate invalidations of Transients are required (e.g. structural changes), increment this.
-$DEV_TRANSIENT_VERSION = '5';
+$DEV_TRANSIENT_VERSION = '6';
 $DEV_TRANSIENT_PREFIX = NULL; // Default is "TI_CL_".
 
 // TODO: Set to FALSE before merging or Git-committing.
