@@ -36,7 +36,7 @@ $commentFormArray = array(
 $useCustomWalker = true;
 ?>
 
-<div id="comments" class="comments-area comments-main" data-post-id="<?php echo isset( $post ) ? $post->ID : ''; ?>">
+<div id="comments" class="comments-area comments-main">
 
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title">
