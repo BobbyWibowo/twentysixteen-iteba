@@ -1,7 +1,14 @@
 <?php
 /**
- * The template for displaying Table of Content pages.
- */
+* Template Name: Table of Content
+* Template Post Type: page
+*
+* The template for displaying Table of Content pages.
+*
+* @package WordPress
+* @subpackage Twenty_Fourteen
+* @since Twenty Fourteen 1.0
+*/
 
 // Do not cache this page (W3 Total Cache).
 // We already use Transients to cache Chapters List.
