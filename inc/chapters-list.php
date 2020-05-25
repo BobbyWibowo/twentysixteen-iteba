@@ -454,7 +454,13 @@ class Chapters_List
 			';
 		}
 
+		/**
+		 * <!--sse-->...<!--/sse--> is Cloudflare's Server Side Excludes (SSE)
+		 * https://support.cloudflare.com/hc/en-us/articles/200170036-What-does-Server-Side-Excludes-SSE-do-
+		 * This feature needs to be manually enabled from Cloudflare to activate.
+		 */
 		return '
+			<!--sse-->
 			<div class="cl-container ' . ( $this->settings['class'] ?: '' ) . '"
 				data-collapse-title="' . __( 'Click to collapse this list' ) . '"
 				data-expand-title="' . __( 'Click to expand this list' ) . '">
@@ -473,6 +479,7 @@ class Chapters_List
 				</div>
 
 			</div>
+			<!--/sse-->
 		';
 	}
 

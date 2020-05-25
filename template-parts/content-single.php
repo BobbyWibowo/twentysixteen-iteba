@@ -17,6 +17,14 @@
 
 	<?php twentysixteen_post_thumbnail(); ?>
 
+	<?php
+	/**
+	 * <!--sse-->...<!--/sse--> is Cloudflare's Server Side Excludes (SSE)
+	 * https://support.cloudflare.com/hc/en-us/articles/200170036-What-does-Server-Side-Excludes-SSE-do-
+	 * This feature needs to be manually enabled from Cloudflare to activate.
+	 */
+	?>
+	<!--sse-->
 	<div class="entry-content">
 		<?php
 			the_content();
@@ -37,6 +45,7 @@
 			}
 			?>
 	</div><!-- .entry-content -->
+	<!--/sse-->
 
 	<footer class="entry-footer">
 		<?php twentysixteen_entry_meta(); ?>
